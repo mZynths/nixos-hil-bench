@@ -16,6 +16,12 @@ in
   programs.niri.enable = true;
   hardware.uinput.enable = true;
 
+  # Remote shell access (server); openssh package below covers the client (ssh, scp, sftp)
+  services.openssh = {
+    enable = true;
+    openFirewall = true;
+  };
+
   services.sunshine = {
     enable = true;
     autoStart = true;
@@ -77,6 +83,7 @@ in
     kitty
     google-chrome
     tmog
+    openssh     # ssh/scp/sftp client — services.openssh already puts this on PATH, listed explicitly anyway
   ];
 
   systemd.user.services.mount-gdrive = {
