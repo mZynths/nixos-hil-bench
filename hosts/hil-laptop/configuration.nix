@@ -1,6 +1,12 @@
 { config, pkgs, ... }:
 
+let
+  tmog = pkgs.callPackage ./tmog.nix { };
+in
 {
+  # vscode and Binary Ninja (free) are proprietary/unfree packages
+  nixpkgs.config.allowUnfree = true;
+
   # Localization & Time
   time.timeZone = "America/Mexico_City";
   i18n.defaultLocale = "en_US.UTF-8";
@@ -50,9 +56,28 @@
   home.file.".zsh/functions.zsh".source = ../../files/zsh/functions.zsh;
   home.file.".zsh/themes.zsh".source = ../../files/zsh/themes.zsh;
 
+  # Niri config (window rules, binds, and the wallpaper spawn-at-startup below)
+  home.file.".config/niri/config.kdl".source = ../../files/niri/config.kdl;
+
+  # Wallpaper, referenced by files/niri/config.kdl's swaybg spawn-at-startup
+  home.file."wallpapers/Jelly Wish.png".source = (../../wallpapers) + "/Jelly Wish.png";
+
+  # Terminal configs — both default to zsh, matching the Mac setup
+  home.file.".config/foot/foot.ini".source = ../../files/foot/foot.ini;
+  home.file.".config/kitty/kitty.conf".source = ../../files/kitty/kitty.conf;
+
   # Cloud Storage Automounts (Google Drive & iCloud)
   programs.fuse.userAllowOther = true;
-  environment.systemPackages = with pkgs; [ rclone ];
+
+  environment.systemPackages = with pkgs; [
+    rclone
+    swaybg      # wallpaper daemon for niri
+    alacritty   # bound to Mod+T in files/niri/config.kdl
+    foot
+    kitty
+    google-chrome
+    tmog
+  ];
 
   systemd.user.services.mount-gdrive = {
     description = "Mount Google Drive";
