@@ -39,11 +39,16 @@
   programs.zsh.ohMyZsh = {
     enable = true;
     plugins = [ "git" "sudo" "direnv" ];
-    theme = "zynths";
+    theme = "zynths-catppu";
   };
 
   # Symlink custom Zsh theme
-  home.file.".oh-my-zsh/custom/themes/zynths.zsh-theme".source = ../../files/zsh-themes/zynths.zsh-theme;
+  home.file.".oh-my-zsh/custom/themes/zynths-catppu.zsh-theme".source = ../../files/zsh-themes/zynths-catppu.zsh-theme;
+
+  # Symlink Zsh dependencies (~/.zsh/*), sourced by .zshrc
+  home.file.".zsh/aliases.zsh".source = ../../files/zsh/aliases.zsh;
+  home.file.".zsh/functions.zsh".source = ../../files/zsh/functions.zsh;
+  home.file.".zsh/themes.zsh".source = ../../files/zsh/themes.zsh;
 
   # Cloud Storage Automounts (Google Drive & iCloud)
   programs.fuse.userAllowOther = true;
