@@ -1,0 +1,1 @@
+# zynths zsh-theme placeholder
