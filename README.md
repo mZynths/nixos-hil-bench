@@ -68,6 +68,20 @@ sudo nixos-rebuild switch --flake .#hil-laptop
 - **`nixpkgs.config.allowUnfree = true`** — required for `vscode`,
   `google-chrome`, and Binary Ninja's build inputs.
 
+## home-manager
+
+`flake.nix` pulls in `home-manager` as a flake input (`inputs.nixpkgs.follows`
+so it shares the same nixpkgs, `home-manager.nixosModules.home-manager`
+imported into the system config) and `configuration.nix` sets
+`home-manager.useGlobalPkgs`/`useUserPackages`. This exists because
+`home.file` — used throughout for symlinking zsh/niri/terminal configs into
+`$HOME` — is a **home-manager option, not a plain NixOS one**; it has to
+live under `home-manager.users.zynths = { ... };`, not at the top level of
+the system config. This was wrong from the original blueprint through
+several commits of this repo's history (a real bug: `nixos-rebuild switch`
+would have failed outright with "the option `home.file' does not exist")
+before being caught and fixed.
+
 ## Desktop: niri + Sunshine
 
 - `programs.niri.enable` — the compositor. `files/niri/config.kdl` is
@@ -109,11 +123,13 @@ Mirrors what's on the Mac, pulled from `~/.zsh/` (previously symlinks into
   error. Also: the *original* dotfiles had `drive` pointing at a different
   email than `$DRIVE` — looked like a stale typo on the Mac, not something
   intentional. Worth double-checking which account is correct.
-- **`ohMyZsh.plugins` is `[ "git" "sudo" "direnv" ]`** — inherited from the
-  original blueprint. The Mac's actual `.zshrc` uses `git`,
-  `zsh-autosuggestions`, `fzf` instead (and wires plugins manually rather
-  than through oh-my-zsh's `plugins=()`). Not reconciled — flagged here in
-  case the mismatch is surprising later.
+- **`ohMyZsh.plugins`** is `[ "git" "sudo" "direnv" "zsh-autosuggestions" "fzf" ]`
+  — `git`/`sudo`/`direnv` kept from the original blueprint, `zsh-autosuggestions`/
+  `fzf` added to match what the Mac's actual `.zshrc` loads. `fzf` is a stock
+  oh-my-zsh plugin (just needs the `fzf` binary, already installed);
+  `zsh-autosuggestions` isn't, so its `pkgs.zsh-autosuggestions` plugin
+  directory is symlinked into `~/.oh-my-zsh/custom/plugins/` via
+  home-manager (see below) for oh-my-zsh's loader to find it.
 
 ## Hardware access (udev + groups)
 

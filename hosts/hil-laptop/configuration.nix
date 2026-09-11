@@ -70,27 +70,44 @@ in
 
   programs.zsh.ohMyZsh = {
     enable = true;
-    plugins = [ "git" "sudo" "direnv" ];
+    # zsh-autosuggestions and fzf match the Mac's actual .zshrc; git/sudo/direnv
+    # are kept from the original blueprint.
+    plugins = [ "git" "sudo" "direnv" "zsh-autosuggestions" "fzf" ];
     theme = "zynths-catppu";
   };
 
-  # Symlink custom Zsh theme
-  home.file.".oh-my-zsh/custom/themes/zynths-catppu.zsh-theme".source = ../../files/zsh-themes/zynths-catppu.zsh-theme;
+  # home-manager: manages everything symlinked into zynths' $HOME.
+  # (home.file is a home-manager option, not a plain NixOS one — it has to
+  # live under home-manager.users.<name>, not at the top level.)
+  home-manager.useGlobalPkgs = true;
+  home-manager.useUserPackages = true;
+  home-manager.users.zynths = {
+    home.stateVersion = "24.05";
 
-  # Symlink Zsh dependencies (~/.zsh/*), sourced by .zshrc
-  home.file.".zsh/aliases.zsh".source = ../../files/zsh/aliases.zsh;
-  home.file.".zsh/functions.zsh".source = ../../files/zsh/functions.zsh;
-  home.file.".zsh/themes.zsh".source = ../../files/zsh/themes.zsh;
+    # Symlink custom Zsh theme
+    home.file.".oh-my-zsh/custom/themes/zynths-catppu.zsh-theme".source = ../../files/zsh-themes/zynths-catppu.zsh-theme;
 
-  # Niri config (window rules, binds, and the wallpaper spawn-at-startup below)
-  home.file.".config/niri/config.kdl".source = ../../files/niri/config.kdl;
+    # zsh-autosuggestions isn't a stock oh-my-zsh plugin, so its package's
+    # plugin directory has to be symlinked into custom/plugins/ for the
+    # plugins=(...) list above to find it.
+    home.file.".oh-my-zsh/custom/plugins/zsh-autosuggestions".source =
+      "${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions";
 
-  # Wallpaper, referenced by files/niri/config.kdl's swaybg spawn-at-startup
-  home.file."wallpapers/Jelly Wish.png".source = (../../wallpapers) + "/Jelly Wish.png";
+    # Symlink Zsh dependencies (~/.zsh/*), sourced by .zshrc
+    home.file.".zsh/aliases.zsh".source = ../../files/zsh/aliases.zsh;
+    home.file.".zsh/functions.zsh".source = ../../files/zsh/functions.zsh;
+    home.file.".zsh/themes.zsh".source = ../../files/zsh/themes.zsh;
 
-  # Terminal configs — both default to zsh, matching the Mac setup
-  home.file.".config/foot/foot.ini".source = ../../files/foot/foot.ini;
-  home.file.".config/kitty/kitty.conf".source = ../../files/kitty/kitty.conf;
+    # Niri config (window rules, binds, and the wallpaper spawn-at-startup below)
+    home.file.".config/niri/config.kdl".source = ../../files/niri/config.kdl;
+
+    # Wallpaper, referenced by files/niri/config.kdl's swaybg spawn-at-startup
+    home.file."wallpapers/Jelly Wish.png".source = (../../wallpapers) + "/Jelly Wish.png";
+
+    # Terminal configs — both default to zsh, matching the Mac setup
+    home.file.".config/foot/foot.ini".source = ../../files/foot/foot.ini;
+    home.file.".config/kitty/kitty.conf".source = ../../files/kitty/kitty.conf;
+  };
 
   # Cloud Storage Automounts (Google Drive & iCloud)
   programs.fuse.userAllowOther = true;
