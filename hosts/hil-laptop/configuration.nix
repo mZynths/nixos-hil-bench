@@ -2,6 +2,7 @@
 
 let
   binaryNinjaFree = pkgs.callPackage ./binaryninja-free.nix { };
+  eim = pkgs.callPackage ./eim.nix { };
   tmog = pkgs.callPackage ./tmog.nix { };
 in
 {
@@ -50,10 +51,16 @@ in
   };
 
   # Hardware Udev Rules for Embedded Dev
+  # platformio-core.udev covers the long tail of common board/programmer
+  # VID:PIDs (Arduino, ESP32 boards, ST-LINK, J-Link, etc.) so new boards
+  # generally don't need a hand-added rule below.
+  services.udev.packages = with pkgs; [ platformio-core.udev openocd ];
+
   services.udev.extraRules = ''
     SUBSYSTEM=="usb", ATTR{idVendor}=="0483", ATTR{idProduct}=="3748", MODE="660", GROUP="plugdev"
     SUBSYSTEM=="usb", ATTR{idVendor}=="0483", ATTR{idProduct}=="374b", MODE="660", GROUP="plugdev"
     SUBSYSTEM=="tty", KERNEL=="ttyUSB*", MODE="660", GROUP="plugdev"
+    SUBSYSTEM=="tty", KERNEL=="ttyACM*", MODE="660", GROUP="plugdev"
   '';
 
   # Shell Environment & Zsh
@@ -108,6 +115,27 @@ in
     imhex
     hexyl       # CLI hex viewer, complements imhex for SSH/scripted use
     binwalk
+
+    # Embedded / hardware toolchain
+    kicad
+    ngspice     # also the sim engine behind KiCad's built-in schematic simulator
+    # qucs-s    # dedicated schematic-capture simulator (ngspice/Xyce backend);
+                # uncomment if an actual RF/S-parameter/harmonic-balance project
+                # shows up — KiCad+ngspice above doesn't cover that, QUCS-S does
+    eim         # ESP-IDF Installation Manager
+    openocd
+    stlink      # st-flash, st-info, st-util
+    dfu-util
+    esptool
+    avrdude     # classic AVR/Arduino (Uno, Nano, ...) flashing
+    platformio-core  # CLI only — VS Code IDE integration is project-level, see docs/dependency-scope.md
+    tio
+    picocom
+    serial-studio # real-time serial plotting/dashboard
+    sigrok-cli
+    pulseview
+    can-utils
+    usbutils    # lsusb
   ];
 
   systemd.user.services.mount-gdrive = {
