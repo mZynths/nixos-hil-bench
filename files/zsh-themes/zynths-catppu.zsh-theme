@@ -16,22 +16,9 @@ CTp_OVERLAY="#9399b2"   # Closer/Arrow (Subtle Grey)
 
 p_SILVERY="#d3d6e0"
 
-# --- Cross-platform millisecond timestamp ---
-# macOS ships BSD date (no %N); install coreutils via Homebrew for gdate.
-# Linux date supports %N natively.
+# --- Millisecond timestamp (NixOS ships GNU coreutils; %N is native) ---
 function _ms_now() {
-    if [[ "$OSTYPE" == darwin* ]]; then
-        # macOS: use gdate if available (brew install coreutils), else fall back
-        # to python3 for ms precision
-        if command -v gdate &>/dev/null; then
-            echo $(( $(gdate +%s%0N) / 1000000 ))
-        else
-            python3 -c 'import time; print(int(time.time() * 1000))'
-        fi
-    else
-        # Linux: GNU date supports %N natively
-        echo $(( $(date +%s%N) / 1000000 ))
-    fi
+    echo $(( $(date +%s%N) / 1000000 ))
 }
 
 # --- Functions ---
