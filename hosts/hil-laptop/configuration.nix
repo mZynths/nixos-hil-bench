@@ -136,6 +136,34 @@ in
     pulseview
     can-utils
     usbutils    # lsusb
+
+    # WebSocket client (ad hoc / scripted use)
+    websocat
+
+    # Languages
+    git
+    rustc
+    cargo
+    go
+    go-task
+
+    # Process / resource monitoring
+    htop        # process list/search/kill
+    btop        # resource graphs, local
+    bottom      # resource graphs, alt layout
+    glances     # resource graphs, has a -w web-dashboard mode for remote checks
+
+    # General dev tooling
+    vscode      # codef ("code" cli)
+    claude-code
+    python3     # json
+    fzf         # cdf, codef
+    ffmpeg      # extract_audio
+    audacity    # audio recording/editing, pairs with the audio-electronics work
+    micromamba  # mamba-family env manager for the python-envs/ specs
+
+    # Documentation
+    texlive.combined.scheme-medium  # xelatex
   ];
 
   systemd.user.services.mount-gdrive = {
