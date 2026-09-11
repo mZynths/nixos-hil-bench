@@ -16,6 +16,15 @@ in
   programs.niri.enable = true;
   hardware.uinput.enable = true;
 
+  # Containers
+  virtualisation.podman = {
+    enable = true;
+    dockerCompat = true; # `docker` aliases to podman
+  };
+
+  # Sandboxing (ad-hoc crackme containment, not a real security boundary)
+  programs.firejail.enable = true;
+
   # Remote shell access (server); openssh package below covers the client (ssh, scp, sftp)
   services.openssh = {
     enable = true;
@@ -84,6 +93,7 @@ in
     google-chrome
     tmog
     openssh     # ssh/scp/sftp client — services.openssh already puts this on PATH, listed explicitly anyway
+    bubblewrap
   ];
 
   systemd.user.services.mount-gdrive = {
