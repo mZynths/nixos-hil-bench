@@ -1,6 +1,7 @@
 { config, pkgs, ... }:
 
 let
+  binaryNinjaFree = pkgs.callPackage ./binaryninja-free.nix { };
   tmog = pkgs.callPackage ./tmog.nix { };
 in
 {
@@ -25,6 +26,9 @@ in
   # Sandboxing (ad-hoc crackme containment, not a real security boundary)
   programs.firejail.enable = true;
 
+  # Packet capture
+  programs.wireshark.enable = true; # sets up dumpcap capabilities for non-root capture
+
   # Remote shell access (server); openssh package below covers the client (ssh, scp, sftp)
   services.openssh = {
     enable = true;
@@ -42,7 +46,7 @@ in
   users.groups.plugdev = {};
   users.users.zynths = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "dialout" "plugdev" "networkmanager" ];
+    extraGroups = [ "wheel" "dialout" "plugdev" "networkmanager" "wireshark" ];
   };
 
   # Hardware Udev Rules for Embedded Dev
@@ -94,6 +98,16 @@ in
     tmog
     openssh     # ssh/scp/sftp client — services.openssh already puts this on PATH, listed explicitly anyway
     bubblewrap
+    wireshark
+
+    # RE / binary analysis
+    ghidra
+    binaryNinjaFree
+    radare2
+    cutter
+    imhex
+    hexyl       # CLI hex viewer, complements imhex for SSH/scripted use
+    binwalk
   ];
 
   systemd.user.services.mount-gdrive = {
