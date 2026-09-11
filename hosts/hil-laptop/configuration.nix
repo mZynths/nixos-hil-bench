@@ -3,8 +3,8 @@
 {
   # Localization & Time
   time.timeZone = "America/Mexico_City";
-  i18n.defaultLocale = "es_MX.UTF-8";
-  console.keyMap = "la-latin1";
+  i18n.defaultLocale = "en_US.UTF-8";
+  console.keyMap = "us";
 
   # Window Manager & Remote Display
   programs.niri.enable = true;
