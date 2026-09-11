@@ -1,0 +1,16 @@
+# Proof-of-concept env. Create with: micromamba create -f python-envs/data-science.yml
+name: data-science
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - numpy
+  - pandas
+  - scipy
+  - matplotlib
+  - seaborn
+  - scikit-learn
+  - statsmodels
+  - jupyterlab
+  - ipython
+  - pip
