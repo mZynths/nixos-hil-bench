@@ -9,7 +9,7 @@ stdenvNoCC.mkDerivation rec {
 
   src = fetchzip {
     url = "https://github.com/espressif/idf-im-cli/releases/download/v${version}/eim-v${version}-linux-x64.zip";
-    sha256 = "1w2jsfzaw4zf3sx6jk0cm0dkki72lkpylnjayls707p2kgawy8s4";
+    hash = "sha256-oF/GGC0fimkS8+cX7wRBaAq3qzX0uMkax4cnz3G44FE=";
     stripRoot = false;
   };
 
