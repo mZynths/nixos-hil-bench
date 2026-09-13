@@ -69,6 +69,11 @@ in
     openFirewall = true;
   };
 
+  # Reach the bench from anywhere without port-forwarding/dynamic-IP hassle.
+  # One-time manual step after rebuild: sudo tailscale up
+  services.tailscale.enable = true;
+  networking.firewall.trustedInterfaces = [ "tailscale0" ];
+
   services.sunshine = {
     enable = true;
     autoStart = true;
