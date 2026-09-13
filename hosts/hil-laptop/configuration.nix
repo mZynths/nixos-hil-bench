@@ -9,6 +9,10 @@ in
   # vscode and Binary Ninja (free) are proprietary/unfree packages
   nixpkgs.config.allowUnfree = true;
 
+  # Bootloader (UEFI via systemd-boot; the disk has a dedicated FAT32 ESP)
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+
   # Localization & Time
   time.timeZone = "America/Mexico_City";
   i18n.defaultLocale = "en_US.UTF-8";
