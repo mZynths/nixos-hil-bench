@@ -18,6 +18,9 @@ in
   programs.niri.enable = true;
   hardware.uinput.enable = true;
 
+  # Compressed RAM-backed swap, first line of defense before the disk swapfile
+  zramSwap.enable = true;
+
   # Containers
   virtualisation.podman = {
     enable = true;
