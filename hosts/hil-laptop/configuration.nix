@@ -1,9 +1,18 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 let
   binaryNinjaFree = pkgs.callPackage ./binaryninja-free.nix { };
   eim = pkgs.callPackage ./eim.nix { };
   tmog = pkgs.callPackage ./tmog.nix { };
+
+  # programs.zsh.ohMyZsh only sets ZSH_CUSTOM if its own `custom` option is
+  # given a Nix-built path — home-manager symlinks into ~/.oh-my-zsh/custom
+  # are never read otherwise (ZSH_CUSTOM falls back to a path inside the
+  # read-only Nix store). Build a proper custom dir instead.
+  ohMyZshCustom = pkgs.linkFarm "oh-my-zsh-custom" [
+    { name = "themes/zynths-catppu.zsh-theme"; path = ../../files/zsh-themes/zynths-catppu.zsh-theme; }
+    { name = "plugins/zsh-autosuggestions"; path = "${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions"; }
+  ];
 in
 {
   # vscode and Binary Ninja (free) are proprietary/unfree packages
@@ -19,8 +28,25 @@ in
   console.keyMap = "us";
 
   # Window Manager & Remote Display
+  # Nothing previously launched niri on boot — programs.niri.enable only
+  # makes it available, it doesn't start a session. Auto-login straight
+  # into niri (no separate greeter) since Sunshine needs an active
+  # graphical session to stream, and this is a single-user bench anyway.
   programs.niri.enable = true;
   hardware.uinput.enable = true;
+
+  services.greetd = {
+    enable = true;
+    settings.default_session = {
+      command = "${config.programs.niri.package}/bin/niri-session";
+      user = "zynths";
+    };
+  };
+
+  # NixOS otherwise injects a stripped PATH via Environment= on the niri.service
+  # unit which shadows the imported user-manager PATH. Disabling the default
+  # lets niri inherit the full PATH set up by niri-session.
+  systemd.user.services.niri.enableDefaultPath = false;
 
   # Compressed RAM-backed swap, first line of defense before the disk swapfile
   zramSwap.enable = true;
@@ -81,7 +107,19 @@ in
     # are kept from the original blueprint.
     plugins = [ "git" "sudo" "direnv" "zsh-autosuggestions" "fzf" ];
     theme = "zynths-catppu";
+    custom = "${ohMyZshCustom}";
   };
+
+  # aliases.zsh/functions.zsh/themes.zsh are symlinked into ~/.zsh/ below via
+  # home-manager, but nothing sources them without this — there's no
+  # ~/.zshrc doing the [ -f ~/.zsh/foo.zsh ] && source ... that the original
+  # Mac setup relied on. mkAfter ensures this runs after oh-my-zsh loads
+  # (matching "aliases/functions override omz, not the other way").
+  programs.zsh.interactiveShellInit = lib.mkAfter ''
+    [ -f ~/.zsh/aliases.zsh ] && source ~/.zsh/aliases.zsh
+    [ -f ~/.zsh/functions.zsh ] && source ~/.zsh/functions.zsh
+    [ -f ~/.zsh/themes.zsh ] && source ~/.zsh/themes.zsh
+  '';
 
   # home-manager: manages everything symlinked into zynths' $HOME.
   # (home.file is a home-manager option, not a plain NixOS one — it has to
@@ -91,16 +129,7 @@ in
   home-manager.users.zynths = {
     home.stateVersion = "24.05";
 
-    # Symlink custom Zsh theme
-    home.file.".oh-my-zsh/custom/themes/zynths-catppu.zsh-theme".source = ../../files/zsh-themes/zynths-catppu.zsh-theme;
-
-    # zsh-autosuggestions isn't a stock oh-my-zsh plugin, so its package's
-    # plugin directory has to be symlinked into custom/plugins/ for the
-    # plugins=(...) list above to find it.
-    home.file.".oh-my-zsh/custom/plugins/zsh-autosuggestions".source =
-      "${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions";
-
-    # Symlink Zsh dependencies (~/.zsh/*), sourced by .zshrc
+    # Symlink Zsh dependencies (~/.zsh/*), sourced via programs.zsh.interactiveShellInit above
     home.file.".zsh/aliases.zsh".source = ../../files/zsh/aliases.zsh;
     home.file.".zsh/functions.zsh".source = ../../files/zsh/functions.zsh;
     home.file.".zsh/themes.zsh".source = ../../files/zsh/themes.zsh;
