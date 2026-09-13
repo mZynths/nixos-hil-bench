@@ -76,6 +76,11 @@ in
     openFirewall = true;
   };
 
+  # Networking — zynths was already in the "networkmanager" group below, but
+  # the service itself was never enabled, so there was no daemon to
+  # associate with WiFi at all on a fresh install.
+  networking.networkmanager.enable = true;
+
   # Role-Based Access Control
   users.groups.plugdev = {};
   users.users.zynths = {
