@@ -172,6 +172,12 @@ Nix doesn't (and shouldn't) manage rclone's OAuth tokens/config.
   `capSysAdmin` + `openFirewall` enabled.
 - `services.openssh` — server, `openFirewall` enabled; `openssh` package
   covers the client (`ssh`, `scp`, `sftp`).
+- `services.tailscale` — reach the bench from anywhere without
+  port-forwarding or caring about dynamic IPs (added ahead of a location
+  move). `networking.firewall.trustedInterfaces = [ "tailscale0" ]` trusts
+  traffic on the tailnet interface. **Manual one-time step, not something
+  Nix can do for you**: run `sudo tailscale up` and follow the auth link —
+  it needs your actual Tailscale account login.
 
 ## Embedded toolchain & PlatformIO
 
@@ -266,14 +272,12 @@ visibility from, long-term.
 
 ## Known gaps / TODO
 
-- `hosts/hil-laptop/hardware.nix` doesn't exist — generate it on-device
-  (see "Before first build").
+- `sudo tailscale up` hasn't been run yet — the bench isn't actually on the
+  tailnet until that one-time manual auth happens.
 - `files/nvim/init.lua` exists but isn't referenced anywhere in
   `configuration.nix` — no `home.file` symlink wires it into
   `~/.config/nvim/init.lua`, and `neovim` itself isn't in
   `environment.systemPackages`.
-- None of the three custom derivations have been build-tested on real
-  NixOS/x86_64-linux hardware.
 - `templates/platformio-project/`'s FHS devShell is built from the
   documented pattern, not verified end-to-end against a real VS Code +
   PlatformIO IDE extension session.
@@ -281,5 +285,7 @@ visibility from, long-term.
   actual machine before the `drive` alias / `$DRIVE` will work.
 - `rclone config` needs to be run manually to create the `gdrive:` and
   `iclouddrive:` remotes the automount services expect.
-- `ohMyZsh.plugins` doesn't match what the Mac's `.zshrc` actually loads
-  (see "Zsh setup").
+- `scripts/install.sh` (on the `installer-script` branch, not yet merged)
+  doesn't set a password for `zynths`/`root` — the real install needed a
+  manual `chpasswd` step after `nixos-install` that the script doesn't
+  encode yet.

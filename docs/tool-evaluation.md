@@ -25,6 +25,7 @@ project-level, not a straight cut.
 - [ ] `sunshine` — remote desktop streaming (service)
 - [ ] `openssh` server — remote shell (service)
 - [ ] `openssh` client — ssh/scp/sftp
+- [ ] `tailscale` — reach the bench from anywhere post-move, no port-forwarding
 
 ## Zsh / shell environment
 
