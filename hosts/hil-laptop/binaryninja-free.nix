@@ -23,7 +23,7 @@ let
 
     src = fetchzip {
       url = "https://github.com/Vector35/binaryninja-api/releases/download/stable/${version}/binaryninja_free_linux.zip";
-      sha256 = "3e8b9c5861abe6e9b04c86b5f9c4ad2dc86cedea79b72d7b0aee1fdcf7ce91d6";
+      sha256 = "16i11qvwl5hclx3g0v1zf69lk153x35j9mnkh7avvcybayn27mqi";
       stripRoot = false;
     };
 
