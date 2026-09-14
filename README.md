@@ -84,19 +84,28 @@ before being caught and fixed.
 
 ## Desktop: niri + Sunshine
 
-- `programs.niri.enable` — the compositor. `files/niri/config.kdl` is
-  niri's **upstream default config verbatim**, plus one added line:
-  a `swaybg` `spawn-at-startup` that sets `wallpapers/Jelly Wish.png` as the
-  wallpaper (niri has no built-in wallpaper support). All of niri's default
-  keybinds (Mod+T terminal, Mod+Q close, workspace/column navigation, etc.)
-  are intact — check the file directly rather than relying on memory of
-  niri's defaults, since they can change upstream.
-- Terminals: `alacritty` (bound to Mod+T by the default config), `foot`,
-  and `kitty` are all installed. `foot`/`kitty` are explicitly configured
-  with `shell=zsh` / `shell zsh` (`files/foot/foot.ini`,
-  `files/kitty/kitty.conf`) so they match the Mac setup; `alacritty` and the
-  system already default to zsh via `users.defaultUserShell`, so it needs no
-  extra config.
+- `programs.niri.enable` — the compositor. `files/niri/config.kdl` started
+  as niri's upstream default config verbatim; two deliberate deviations
+  since: a `swaybg` `spawn-at-startup` for `wallpapers/Jelly Wish.png`
+  (niri has no built-in wallpaper support), and the `output "eDP-1"` block
+  is now filled in and enabled with darth-vader's actual panel specs
+  (1920x1080@60.020, pinned at `scale 1` — no HiDPI upscaling — rather than
+  the 1.25x niri auto-detects from the panel's physical size if left
+  unset). All of niri's default keybinds (Mod+T terminal, Mod+Q close,
+  workspace/column navigation, etc.) are otherwise intact — check the file
+  directly rather than relying on memory of niri's defaults, since they can
+  change upstream.
+- Terminals: `kitty` (bound to Mod+T), `foot`, and `alacritty` are all
+  installed, all default to zsh, and all three share the Catppuccin Mocha
+  palette (`files/{kitty,foot,alacritty}/`) rather than rendering with
+  unstyled system defaults.
+- `waybar` (`files/waybar/`) — thin macOS-style top bar (26px, nothing in
+  the center), Catppuccin Mocha themed, needs `nerd-fonts.jetbrains-mono`
+  (`fonts.packages`) for its icon glyphs to render instead of blank boxes.
+- `fuzzel`, `swaylock`, `playerctl`, `brightnessctl`, `pavucontrol` — niri's
+  default config.kdl references these directly (Mod+D launcher, Super+Alt+L
+  locker, media/brightness keys, waybar's volume click-through) but none
+  were installed until this was actually tested on real hardware.
 - `services.sunshine` — remote game-streaming style desktop access,
   `capSysAdmin` + `openFirewall` enabled. This is how you're meant to reach
   the bench remotely.
