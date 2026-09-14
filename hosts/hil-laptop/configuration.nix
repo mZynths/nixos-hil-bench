@@ -116,6 +116,15 @@ in
   programs.zsh.enable = true;
   users.defaultUserShell = pkgs.zsh;
 
+  # ohMyZsh.plugins below references "direnv", but that only wires the shell
+  # hook -- the actual binary was never installed, which means the entire
+  # project-level-dependency workflow in docs/dependency-scope.md has never
+  # actually worked. nix-direnv caches flake evaluations for faster reloads.
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+  };
+
   programs.zsh.ohMyZsh = {
     enable = true;
     # zsh-autosuggestions and fzf match the Mac's actual .zshrc; git/sudo/direnv

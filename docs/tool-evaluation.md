@@ -38,6 +38,7 @@ project-level, not a straight cut.
 - [ ] `zsh` + oh-my-zsh — shell
 - [ ] `zynths-catppu` theme
 - [ ] `nix-ld` — run non-NixOS dynamically-linked binaries
+- [ ] `direnv` + `nix-direnv` — project-level dependency loading, see `docs/dependency-scope.md`
 
 ## RBAC / hardware access
 
