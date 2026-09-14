@@ -22,6 +22,10 @@ in
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  # waybar's icon glyphs (battery/volume/network) are Nerd Font private-use
+  # codepoints — without this they render as blank boxes.
+  fonts.packages = [ pkgs.nerd-fonts.jetbrains-mono ];
+
   # Localization & Time
   time.timeZone = "America/Mexico_City";
   i18n.defaultLocale = "en_US.UTF-8";
@@ -148,6 +152,10 @@ in
     # Niri config (window rules, binds, and the wallpaper spawn-at-startup below)
     home.file.".config/niri/config.kdl".source = ../../files/niri/config.kdl;
 
+    # Thin macOS-style top bar, Catppuccin Mocha themed
+    home.file.".config/waybar/config.jsonc".source = ../../files/waybar/config.jsonc;
+    home.file.".config/waybar/style.css".source = ../../files/waybar/style.css;
+
     # Wallpaper, referenced by files/niri/config.kdl's swaybg spawn-at-startup
     home.file."wallpapers/Jelly Wish.png".source = (../../wallpapers) + "/Jelly Wish.png";
 
@@ -179,6 +187,7 @@ in
     wireplumber   # wpctl, volume keys (already present transitively, kept explicit)
     playerctl     # media keys
     brightnessctl # brightness keys
+    pavucontrol   # waybar's pulseaudio module click-through
     openssh     # ssh/scp/sftp client — services.openssh already puts this on PATH, listed explicitly anyway
     bubblewrap
     wireshark

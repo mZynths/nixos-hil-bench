@@ -1,0 +1,52 @@
+// macOS-style thin top bar: window info on the left, status on the right,
+// nothing in the center.
+{
+  "layer": "top",
+  "position": "top",
+  "height": 26,
+  "spacing": 6,
+  "margin-top": 4,
+  "margin-left": 8,
+  "margin-right": 8,
+
+  "modules-left": ["niri/workspaces", "niri/window"],
+  "modules-center": [],
+  "modules-right": ["pulseaudio", "network", "battery", "clock", "tray"],
+
+  "niri/workspaces": {
+    "format": "{index}"
+  },
+
+  "niri/window": {
+    "format": "{title}",
+    "max-length": 60
+  },
+
+  "clock": {
+    "format": "{:%H:%M   %a %d %b}",
+    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
+  },
+
+  "battery": {
+    "format": "{capacity}% {icon}",
+    "format-icons": ["", "", "", "", ""],
+    "states": { "warning": 30, "critical": 15 }
+  },
+
+  "network": {
+    "format-wifi": "{essid} ({signalStrength}%) ",
+    "format-ethernet": "{ipaddr} ",
+    "format-disconnected": "⚠ offline"
+  },
+
+  "pulseaudio": {
+    "format": "{volume}% {icon}",
+    "format-muted": " muted",
+    "format-icons": { "default": ["", "", ""] },
+    "on-click": "pavucontrol"
+  },
+
+  "tray": {
+    "spacing": 8
+  }
+}
