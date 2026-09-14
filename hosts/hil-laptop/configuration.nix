@@ -183,6 +183,15 @@ in
     # Niri config (window rules, binds, and the wallpaper spawn-at-startup below)
     home.file.".config/niri/config.kdl".source = ../../files/niri/config.kdl;
 
+    # monitor.kdl (included by config.kdl above) must be a plain writable
+    # file, not a home.file symlink -- nwg-displays owns it entirely and
+    # rewrites it on every Apply. Only create it if missing, so nwg-displays'
+    # own writes survive across rebuilds instead of being reset each time.
+    home.activation.ensureNiriMonitorKdl = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      mkdir -p "$HOME/.config/niri"
+      [ -f "$HOME/.config/niri/monitor.kdl" ] || touch "$HOME/.config/niri/monitor.kdl"
+    '';
+
     # Thin macOS-style top bar, Catppuccin Mocha themed
     home.file.".config/waybar/config.jsonc".source = ../../files/waybar/config.jsonc;
     home.file.".config/waybar/style.css".source = ../../files/waybar/style.css;

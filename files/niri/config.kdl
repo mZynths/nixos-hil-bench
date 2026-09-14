@@ -1,3 +1,10 @@
+// monitor.kdl is a plain writable file (NOT home-manager-managed, see
+// configuration.nix's ensureNiriMonitorKdl activation script) that
+// nwg-displays owns entirely -- this include line makes nwg-displays skip
+// trying to rewrite this file (which it can't, since it's a read-only
+// home-manager symlink) and only touch monitor.kdl instead.
+include "monitor.kdl"
+
 // This config is in the KDL format: https://kdl.dev
 // "/-" comments out the following node.
 // Check the wiki for a full description of the configuration:
