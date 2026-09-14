@@ -106,6 +106,19 @@ before being caught and fixed.
   default config.kdl references these directly (Mod+D launcher, Super+Alt+L
   locker, media/brightness keys, waybar's volume click-through) but none
   were installed until this was actually tested on real hardware.
+- `nwg-displays` — GUI display arrangement, confirmed working on real
+  hardware (multi-monitor: laptop panel + an external Xiaomi display).
+  Needed one non-obvious fix to work at all: `config.kdl` is a
+  home-manager-managed read-only symlink, but nwg-displays tries to write
+  directly into it (`open(config.kdl, "w")`) to inject an
+  `include "monitor.kdl"` line on every Apply. Its own code skips that
+  write if the include is already present, so `config.kdl` now has that
+  include pre-added, and `~/.config/niri/monitor.kdl` is a **plain,
+  non-home-manager-managed file** — a `home.activation` script
+  (`ensureNiriMonitorKdl`) creates it empty only if missing, so
+  nwg-displays' writes to it persist across rebuilds instead of being
+  reset. If you ever see nwg-displays' Apply button silently do nothing
+  again, check `~/.config/niri/config.kdl` still has the include line.
 - `services.sunshine` — remote game-streaming style desktop access,
   `capSysAdmin` + `openFirewall` enabled. This is how you're meant to reach
   the bench remotely.
