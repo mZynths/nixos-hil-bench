@@ -85,6 +85,7 @@ in
   # the service itself was never enabled, so there was no daemon to
   # associate with WiFi at all on a fresh install.
   networking.networkmanager.enable = true;
+  networking.hostName = "darth-vader"; # matte black Thinkpad, classic red dot
 
   # Role-Based Access Control
   users.groups.plugdev = {};
