@@ -153,6 +153,28 @@ in
   home-manager.users.zynths = {
     home.stateVersion = "24.05";
 
+    # macOS-style GTK theme/icons/cursor (KiCad and other GTK/wxWidgets apps
+    # were rendering with plain Adwaita — GTK's own default — since nothing
+    # had ever set a theme).
+    gtk = {
+      enable = true;
+      theme = {
+        name = "WhiteSur-Dark";
+        package = pkgs.whitesur-gtk-theme;
+      };
+      iconTheme = {
+        name = "WhiteSur-dark";
+        package = pkgs.whitesur-icon-theme;
+      };
+    };
+
+    home.pointerCursor = {
+      name = "WhiteSur-cursors";
+      package = pkgs.whitesur-cursors;
+      size = 24;
+      gtk.enable = true;
+    };
+
     # Symlink Zsh dependencies (~/.zsh/*), sourced via programs.zsh.interactiveShellInit above
     home.file.".zsh/aliases.zsh".source = ../../files/zsh/aliases.zsh;
     home.file.".zsh/functions.zsh".source = ../../files/zsh/functions.zsh;
