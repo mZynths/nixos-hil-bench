@@ -219,6 +219,8 @@ in
     playerctl     # media keys
     brightnessctl # brightness keys
     pavucontrol   # waybar's pulseaudio module click-through
+    nwg-displays  # GUI display arrangement; writes changes into niri's config.kdl
+                  # (unlike wdisplays, which only applies them transiently)
     openssh     # ssh/scp/sftp client — services.openssh already puts this on PATH, listed explicitly anyway
     bubblewrap
     wireshark
