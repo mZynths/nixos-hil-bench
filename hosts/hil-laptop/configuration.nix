@@ -150,7 +150,10 @@ in
   # live under home-manager.users.<name>, not at the top level.)
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;
-  home-manager.users.zynths = {
+  # A function (not a plain attrset) so this submodule gets home-manager's
+  # own extended lib (needed for lib.hm.dag.entryAfter below) rather than
+  # just closing over the outer NixOS module's plain nixpkgs lib.
+  home-manager.users.zynths = { lib, pkgs, ... }: {
     home.stateVersion = "24.05";
 
     # macOS-style GTK theme/icons/cursor (KiCad and other GTK/wxWidgets apps
