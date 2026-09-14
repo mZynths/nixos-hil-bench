@@ -14,9 +14,15 @@ project-level, not a straight cut.
 
 - [ ] `niri` — compositor
 - [ ] `swaybg` — wallpaper daemon
-- [ ] `alacritty` — terminal (bound to Mod+T)
-- [ ] `foot` — terminal
-- [ ] `kitty` — terminal
+- [ ] `alacritty` — terminal, Catppuccin Mocha themed
+- [ ] `foot` — terminal, Catppuccin Mocha themed
+- [ ] `kitty` — terminal, Catppuccin Mocha themed, bound to Mod+T
+- [ ] `fuzzel` — Mod+D app launcher
+- [ ] `swaylock` — Super+Alt+L screen locker
+- [ ] `waybar` — status bar
+- [ ] `wireplumber` — `wpctl`, volume keys
+- [ ] `playerctl` — media keys
+- [ ] `brightnessctl` — brightness keys
 - [ ] `tmog` — GUI system monitor/task manager
 - [ ] `google-chrome` — browser
 

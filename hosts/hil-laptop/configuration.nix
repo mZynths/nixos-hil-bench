@@ -151,9 +151,12 @@ in
     # Wallpaper, referenced by files/niri/config.kdl's swaybg spawn-at-startup
     home.file."wallpapers/Jelly Wish.png".source = (../../wallpapers) + "/Jelly Wish.png";
 
-    # Terminal configs — both default to zsh, matching the Mac setup
+    # Terminal configs — all three default to zsh and share the Catppuccin
+    # Mocha palette; kitty is the themed default (Mod+T), the other two are
+    # kept installed and themed too rather than trimmed.
     home.file.".config/foot/foot.ini".source = ../../files/foot/foot.ini;
     home.file.".config/kitty/kitty.conf".source = ../../files/kitty/kitty.conf;
+    home.file.".config/alacritty/alacritty.toml".source = ../../files/alacritty/alacritty.toml;
   };
 
   # Cloud Storage Automounts (Google Drive & iCloud)
@@ -162,11 +165,20 @@ in
   environment.systemPackages = with pkgs; [
     rclone
     swaybg      # wallpaper daemon for niri
-    alacritty   # bound to Mod+T in files/niri/config.kdl
+    alacritty
     foot
-    kitty
+    kitty       # bound to Mod+T in files/niri/config.kdl
     google-chrome
     tmog
+
+    # niri's default config.kdl references these directly (launcher, locker,
+    # bar, media/brightness keys) but none of them were ever installed
+    fuzzel        # Mod+D app launcher
+    swaylock      # Super+Alt+L screen locker
+    waybar        # status bar, spawn-at-startup
+    wireplumber   # wpctl, volume keys (already present transitively, kept explicit)
+    playerctl     # media keys
+    brightnessctl # brightness keys
     openssh     # ssh/scp/sftp client — services.openssh already puts this on PATH, listed explicitly anyway
     bubblewrap
     wireshark
