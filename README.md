@@ -32,7 +32,7 @@ files/                             tracked config content, symlinked into $HOME 
   niri/config.kdl
   foot/foot.ini
   kitty/kitty.conf
-  nvim/init.lua                    NOT currently wired into configuration.nix (see Gaps)
+  nvim/init.lua
 python-envs/
   data-science.yml                 micromamba/conda env spec, proof of concept
 templates/
@@ -294,12 +294,6 @@ visibility from, long-term.
 
 ## Known gaps / TODO
 
-- `sudo tailscale up` hasn't been run yet — the bench isn't actually on the
-  tailnet until that one-time manual auth happens.
-- `files/nvim/init.lua` exists but isn't referenced anywhere in
-  `configuration.nix` — no `home.file` symlink wires it into
-  `~/.config/nvim/init.lua`, and `neovim` itself isn't in
-  `environment.systemPackages`.
 - `templates/platformio-project/`'s FHS devShell is built from the
   documented pattern, not verified end-to-end against a real VS Code +
   PlatformIO IDE extension session.

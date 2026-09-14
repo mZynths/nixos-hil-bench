@@ -174,7 +174,7 @@ in
     home.pointerCursor = {
       name = "WhiteSur-cursors";
       package = pkgs.whitesur-cursors;
-      size = 24;
+      size = 12;
       gtk.enable = true;
     };
 
@@ -182,6 +182,10 @@ in
     home.file.".zsh/aliases.zsh".source = ../../files/zsh/aliases.zsh;
     home.file.".zsh/functions.zsh".source = ../../files/zsh/functions.zsh;
     home.file.".zsh/themes.zsh".source = ../../files/zsh/themes.zsh;
+
+    # Neovim config -- existed in the repo since the first commit but was
+    # never actually wired up (no package, no symlink) until now
+    home.file.".config/nvim/init.lua".source = ../../files/nvim/init.lua;
 
     # Niri config (window rules, binds, and the wallpaper spawn-at-startup below)
     home.file.".config/niri/config.kdl".source = ../../files/niri/config.kdl;
@@ -276,6 +280,7 @@ in
     cargo
     go
     go-task
+    neovim
 
     # Process / resource monitoring
     htop        # process list/search/kill

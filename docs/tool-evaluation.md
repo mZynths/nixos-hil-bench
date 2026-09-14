@@ -25,6 +25,8 @@ project-level, not a straight cut.
 - [ ] `brightnessctl` — brightness keys
 - [ ] `tmog` — GUI system monitor/task manager
 - [ ] `google-chrome` — browser
+- [ ] `nwg-displays` — GUI display arrangement
+- [ ] WhiteSur GTK theme/icons/cursor — macOS-style, replaces Adwaita default
 
 ## Remote access
 
@@ -106,6 +108,7 @@ project-level, not a straight cut.
 - [ ] `rustc` + `cargo`
 - [ ] `go`
 - [ ] `go-task`
+- [ ] `neovim`
 - [ ] `vscode`
 - [ ] `claude-code`
 - [ ] `python3`
